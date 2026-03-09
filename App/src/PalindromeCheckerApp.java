@@ -1,14 +1,14 @@
-import java.util.*;
+import java.util.Scanner;
 public class PalindromeCheckerApp {
     public static void main (String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Input : ");
         String s = sc.nextLine();
+        s = s.replaceAll("\\s+", "").toLowerCase();
         boolean result = check(s, 0, s.length() - 1);
         System.out.println("Is Palindrome? : " + result);
         sc.close();
     }
-
     private static boolean check(String s, int start, int end) {
 
         if (start >= end) {
