@@ -1,36 +1,59 @@
-import java.util.Scanner;
-class PalindromeChecker {
+import java.util.*;
+interface PalindromeStrategy {
+    boolean checkPalindrome(String s);
+}
+
+class StackStrategy implements PalindromeStrategy {
     public boolean checkPalindrome(String s) {
-        int start = 0;
-        int end = s.length() - 1;
-        while (start < end) {
-            if (s.charAt(start) != s.charAt(end)) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            stack.push(c);
+        }
+        for (char c : s.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
         return true;
     }
 }
+
+// Deque Strategy
+class DequeStrategy implements PalindromeStrategy {
+    public boolean checkPalindrome(String s) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : s.toCharArray()) {
+            deque.add(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 public class PalindromeCheckerApp {
+
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
-
         System.out.print("Input : ");
         String s = sc.nextLine();
-
-        // normalize string (ignore spaces and case)
         s = s.replaceAll("\\s+", "").toLowerCase();
-
-        // create object of PalindromeChecker
-        PalindromeChecker checker = new PalindromeChecker();
-
-        boolean result = checker.checkPalindrome(s);
-
+        System.out.print("Choose Strategy (1-Stack, 2-Deque): ");
+        int choice = sc.nextInt();
+        PalindromeStrategy strategy;
+        if (choice == 1) {
+            strategy = new StackStrategy();
+        } else {
+            strategy = new DequeStrategy();
+        }
+        boolean result = strategy.checkPalindrome(s);
         System.out.println("Is Palindrome? : " + result);
-
         sc.close();
     }
 }
